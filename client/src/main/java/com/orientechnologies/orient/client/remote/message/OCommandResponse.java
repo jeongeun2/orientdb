@@ -31,7 +31,6 @@ import com.orientechnologies.orient.client.binary.OChannelBinaryAsynchClient;
 import com.orientechnologies.orient.client.remote.OBinaryResponse;
 import com.orientechnologies.orient.client.remote.ORemoteConnectionPool;
 import com.orientechnologies.orient.client.remote.OStorageRemote;
-import com.orientechnologies.orient.client.remote.OStorageRemoteOperation;
 import com.orientechnologies.orient.client.remote.OStorageRemoteSession;
 import com.orientechnologies.orient.core.command.OCommandRequestText;
 import com.orientechnologies.orient.core.db.ODatabaseDocumentInternal;
@@ -43,13 +42,10 @@ import com.orientechnologies.orient.core.exception.OStorageException;
 import com.orientechnologies.orient.core.record.ORecord;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OLiveResultListener;
-import com.orientechnologies.orient.core.storage.OPhysicalPosition;
+import com.orientechnologies.orient.enterprise.channel.binary.OChannelBinary;
 import com.orientechnologies.orient.enterprise.channel.binary.OChannelBinaryProtocol;
 
 public final class OCommandResponse implements OBinaryResponse<Object> {
-  /**
-   * 
-   */
   private final OStorageRemote      storage;
   private final boolean             asynch;
   private final OCommandRequestText iCommand;
@@ -63,6 +59,11 @@ public final class OCommandResponse implements OBinaryResponse<Object> {
     this.iCommand = iCommand;
     this.database = database;
     this.live = live;
+  }
+
+  public void write(OChannelBinary channel, int protocolVersion, String recordSerializer) throws IOException {
+    throw new UnsupportedOperationException();
+
   }
 
   @Override
