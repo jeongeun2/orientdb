@@ -598,7 +598,7 @@ public class OStorageRemote extends OStorageAbstract implements OStorageProxy {
     ORecordCallback<OCreateRecordResponse> realCallback = null;
     if (iCallback != null) {
       realCallback = (iRID, response) -> {
-        iCallback.call(iRID, response.getIdentity().clusterPosition);
+        iCallback.call(iRID, response.getIdentity().getClusterPosition());
         updateCollectionsFromChanges(collectionManager, response.getChangedIds());
       };
     }
@@ -607,14 +607,14 @@ public class OStorageRemote extends OStorageAbstract implements OStorageProxy {
     final OCreateRecordRequest request = new OCreateRecordRequest(iContent, iRid, iRecordType);
     final OCreateRecordResponse response = new OCreateRecordResponse();
     Long res = asyncNetworkOperation(request, response, iMode, iRid, realCallback,
-        "Error on create record in cluster " + iRid.clusterId);
+        "Error on create record in cluster " + iRid.getClusterId());
     if (res != null) {
-      ppos.clusterPosition = response.getIdentity().clusterPosition;
+      ppos.clusterPosition = response.getIdentity().getClusterPosition();
       ppos.recordVersion = response.getVersion();
       // THIS IS A COMPATIBILITY FIX TO AVOID TO FILL THE CLUSTER ID IN CASE OF ASYNC
       if (iMode == 0) {
-        iRid.clusterId = response.getIdentity().clusterId;
-        iRid.clusterPosition = response.getIdentity().clusterPosition;
+        iRid.setClusterId( response.getIdentity().getClusterId());
+        iRid.setClusterPosition( response.getIdentity().getClusterPosition());
       }
       updateCollectionsFromChanges(collectionManager, response.getChangedIds());
     }
